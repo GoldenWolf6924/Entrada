@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inicio de sesión</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script src="{{ url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+</head>
+
+<body>
+  <div class="login-wrapper">
+    <div class="login-container">
+      <div class="logo">
+        <img src="{{ url_for('static', filename='img/logofcfmpng.png') }}" alt="Logo FCFM">
+      </div>
+      
+      <h1 class="title">Bienvenido</h1>
+
+      <form method="POST">
+        <div class="form-group">
+          <div class="input-container">
+            <i class="icon-user"></i>
+            <input type="text" name="usuario" placeholder="Usuario" autocomplete="off" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="input-container">
+            <i class="icon-lock"></i>
+            <input type="password" name="password" id="passwordInput" placeholder="Contraseña" autocomplete="off" required>
+            <span class="toggle-password" style="display: none;">
+              <i class="icon-eye" id="toggleIcon"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="forgot-password">
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+
+<div class="buttons-container">
+  <button type="submit" name="btningresar" class="btn-login">INICIAR SESIÓN</button>
+  <a href="{{ url_for('index') }}" class="btn-back">Regresar</a>
+</div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Obtener elementos
+    const passwordInput = document.getElementById('passwordInput');
+    const togglePassword = document.querySelector('.toggle-password');
+    const toggleIcon = document.getElementById('toggleIcon');
+
+    // Mostrar/ocultar icono de ojo según contenido
+    passwordInput.addEventListener('input', function() {
+      if (this.value.length > 0) {
+        togglePassword.style.display = 'block';
+      } else {
+        togglePassword.style.display = 'none';
+        // Resetear a contraseña oculta si se borra el texto
+        passwordInput.type = "password";
+        toggleIcon.classList.replace('icon-eye-slash', 'icon-eye');
+      }
+    });
+
+    // Función para alternar visibilidad de contraseña
+    function togglePasswordVisibility() {
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.classList.replace('icon-eye', 'icon-eye-slash');
+      } else {
+        passwordInput.type = "password";
+        toggleIcon.classList.replace('icon-eye-slash', 'icon-eye');
+      }
+    }
+
+    // Asignar evento click al icono
+    togglePassword.addEventListener('click', togglePasswordVisibility);
+
+    // Efectos de focus para todos los inputs
+    document.querySelectorAll('.input-container input').forEach(input => {
+      input.addEventListener('focus', function() {
+        this.parentNode.classList.add('focused');
+      });
+      
+      input.addEventListener('blur', function() {
+        if(this.value === "") {
+          this.parentNode.classList.remove('focused');
+        }
+      });
+    });
+  </script>
+
+  {% if mensaje %}
+  <script>
+    const tipo = "{{ mensaje.tipo }}";
+    const titulo = tipo === "success" ? "¡Éxito!" : "Error";
+
+    Swal.fire({
+      title: titulo,
+      html: "{{ mensaje.text|safe }}",
+      icon: tipo,
+      confirmButtonText: "Aceptar",
+      background: tipo === "success" ? "#d4edda" : "#f8d7da",
+      color: "#333",
+      iconColor: tipo === "success" ? "#28a745" : "#dc3545",
+      timer: 7000,
+      timerProgressBar: true,
+    });
+  </script>
+  {% endif %}
+</body>
+</html>

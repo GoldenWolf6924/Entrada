@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard de Asistencia</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+<script src="{{ url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery-3.6.0.min.js') }}"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/select2.min.css') }}" />
+<script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+
+
+<style>
+
+/* Estilos para la sección de búsqueda */
+.search-container {
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+}
+
+.search-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.date-filter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.date-filter label {
+  font-size: 0.9rem;
+  align-self: flex-end;
+  margin-bottom: 7px;
+  color: #555;
+  white-space: nowrap;
+  margin-right: -5px;
+}
+
+.date-filter input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 150px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #084494;
+  box-shadow: 0 0 0 2px rgba(8, 68, 148, 0.2);
+}
+
+.btn-filter{
+  background-color: #084494;
+  color: white
+}
+
+.btn-filter:hover {
+  background-color: #052652;
+}
+
+.btn-filter:active {
+  background-color: #031733;
+  transform: scale(0.97);
+}
+
+/* Estilos para botones */
+.search-container .btn-search,
+.search-container .btn-filter,
+.search-container .btn-clear {
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.search-container .btn-search {
+  background-color: #084494;
+}
+
+.search-container .btn-search:hover {
+  background-color: #052652;
+}
+
+.search-container .btn-search:active {
+  background-color: #031733;
+  transform: scale(0.97);
+}
+
+.search-container .btn-filter {
+  background-color: #28a745;
+}
+
+.search-container .btn-filter:hover {
+  background-color: #218838;
+}
+
+.search-container .btn-filter:active {
+  background-color: #1e7e34;
+  transform: scale(0.97);
+}
+
+.search-container .btn-clear {
+  background-color: #c90707;
+}
+
+.search-container .btn-clear:hover {
+  background-color: #6e0404;
+}
+
+.search-container .btn-clear:active {
+  background-color: #490202;
+  transform: scale(0.97);
+}
+
+/* Estilos para la tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  table-layout: fixed;
+}
+
+th, td {
+  padding: 12px 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #084494;
+  color: white;
+  font-weight: 600;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Celdas de acción */
+.action-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  padding: 8px 4px !important;
+}
+
+/* Estilos para botones de acción */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  border: none;
+  gap: 6px;
+}
+
+.edit-btn {
+  background-color: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.edit-btn:hover {
+  background-color: #bbdefb;
+  transform: translateY(-1px);
+}
+
+.delete-btn {
+  background-color: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+}
+
+.delete-btn:hover {
+  background-color: #ffcdd2;
+  transform: translateY(-1px);
+}
+
+.btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Estilos para el modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-content {
+  background: white;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  animation: modalSlideIn 0.4s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #777;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* Estilos para paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-prev, .btn-next {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #084494;
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-radius: 40px;
+}
+
+.btn-prev:hover, .btn-next:hover {
+  background-color: #052652;
+}
+
+.page-info {
+  font-weight: 500;
+  color: #555;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-group,
+  .date-filter {
+    flex-direction: column;
+  }
+
+  .date-filter input[type="date"] {
+    width: 100%;
+  }
+
+  .modal-content {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .action-cell {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+}
+
+table td:nth-child(2),
+table th:nth-child(2) {
+  width: 25%;
+  word-break: break-word;
+}
+
+/* Estilos para SweetAlert personalizado */
+.swal2-popup .swal2-actions {
+  flex-direction: column;
+  gap: 10px;
+}
+
+.swal2-popup .swal2-confirm,
+.swal2-popup .swal2-deny {
+  width: 100%;
+  margin: 0;
+}
+
+</style>
+</head>
+<body>
+
+   {% include 'header_footer.html' %}
+
+<div class="container">
+  <h2>Asistencias de Alumnos</h2>
+
+  <!-- Barra de búsqueda -->
+  <div class="search-container">
+  <form id="search-form" method="GET" action="{{ url_for('dashboard') }}">
+    <div class="search-group">
+ <select name="alumnos" id="alumnos" multiple>
+  {% for alumno in alumnos %}
+    <option value="{{ alumno.Matricula }}" 
+      {% if alumno.Matricula in alumnos_seleccionados %} selected {% endif %}>
+      {{ alumno.Nombre }} ({{ alumno.Matricula }})
+    </option>
+  {% endfor %}
+</select>
+
+
+      <button type="submit" class="btn btn-search">Buscar</button>
+    </div>
+
+    <div class="date-filter">
+      <label for="fecha_inicio"><b>Desde:</b></label>
+      <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio if fecha_inicio }}">
+
+      <label for="fecha_fin"><b>Hasta:</b></label>
+      <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin if fecha_fin }}">
+
+  {% if alumnos_seleccionados or fecha_inicio or fecha_fin %}
+        <button type="button" id="clearFiltersBtn" class="btn btn-clear">Limpiar filtros</button>
+      {% endif %}
+    </div>
+  </form>
+</div>
+
+<!-- Por esto: -->
+<div style="margin-bottom: 20px;">
+  {% if session['rol'] == 'Administrador' %}
+  <button type="button" id="generateReportBtn" class="btn btn-filter">📄 Generar Reporte</button>
+  {% endif %}
+</div>
+  <table>
+    <thead>
+      <tr>
+        <th>Matrícula</th>
+        <th>Nombre</th>
+        <th>Entrada</th>
+        <th>Salida</th>
+{% if session['rol'] == 'Administrador' %}
+  <th>Acciones</th>
+{% endif %}
+
+      </tr>
+    </thead>
+    <tbody>
+  {% for r in registros %}
+  <tr>
+    <td>{{ r.Matricula }}</td>
+    <td>{{ r.Nombre }}</td>
+    <td>{{ r.Entrada.strftime('%Y-%m-%d %H:%M:%S') if r.Entrada else '--' }}</td>
+    <td>{{ r.Salida.strftime('%Y-%m-%d %H:%M:%S') if r.Salida else '--' }}</td>
+
+    {% if session['rol'] == 'Administrador' %}
+      <td class="action-cell">
+        <button type="button" class="action-btn edit-btn"
+                data-id="{{ r.ID }}"
+                data-entrada="{{ r.Entrada.strftime('%Y-%m-%dT%H:%M') if r.Entrada else '' }}"
+                data-salida="{{ r.Salida.strftime('%Y-%m-%dT%H:%M') if r.Salida else '' }}"
+                onclick="abrirModalAsistencia(this)">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+        </button>
+        <a href="{{ url_for('eliminar_asistencia', id=r.ID) }}" class="action-btn delete-btn" onclick="return confirm('¿Estás seguro de eliminar esta asistencia?');">
+            <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </svg>
+        </a>
+      </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</tbody>
+
+  </table>
+
+  <!-- Paginación -->
+  <div class="pagination">
+    {% if page > 1 %}
+      <a href="{{ url_for('dashboard', page=page-1, search=search_query, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin) }}"
+         class="btn-prev">Anterior</a>
+    {% endif %}
+
+    <span class="page-info">Página {{ page }} de {{ total_paginas }}</span>
+
+    {% if page < total_paginas %}
+      <a href="{{ url_for('dashboard', page=page+1, search=search_query, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin) }}"
+         class="btn-next">Siguiente</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modalAsistencia" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="cerrarModalAsistencia()">&times;</span>
+    <h3>Modificar Asistencia</h3>
+    <form id="formEditarAsistencia" method="POST" action="{{ url_for('modificar_asistencia') }}">
+      <input type="hidden" name="id" id="id_asistencia">
+      <div class="form-group">
+        <label for="entrada_edit">Entrada:</label>
+        <input type="datetime-local" id="entrada_edit" name="entrada" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="salida_edit">Salida:</label>
+        <input type="datetime-local" id="salida_edit" name="salida" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-submit">Guardar cambios</button>
+    </form>
+  </div>
+</div>
+
+<script>
+// Función para abrir modal de asistencia
+function abrirModalAsistencia(button) {
+    const modal = document.getElementById('modalAsistencia');
+    const id = button.getAttribute('data-id');
+    const entrada = button.getAttribute('data-entrada');
+    const salida = button.getAttribute('data-salida');
+
+    document.getElementById('id_asistencia').value = id;
+    document.getElementById('entrada_edit').value = entrada || '';
+    document.getElementById('salida_edit').value = salida || '';
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+// Función para cerrar modal de asistencia
+function cerrarModalAsistencia() {
+    document.getElementById('modalAsistencia').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Cerrar modal al hacer click fuera
+window.onclick = function(event) {
+    if(event.target == document.getElementById('modalAsistencia')) {
+        cerrarModalAsistencia();
+    }
+};
+
+// Cerrar modal con tecla ESC
+document.addEventListener('keydown', function(evt) {
+    if (evt.key === "Escape") {
+        cerrarModalAsistencia();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const select = document.getElementById('alumnos');
+    $(select).select2({
+        placeholder: "Seleccione alumnos",
+        allowClear: true
+    });
+});
+
+// Limpiar filtros
+document.getElementById('clearFiltersBtn')?.addEventListener('click', function() {
+    window.location.href = "{{ url_for('dashboard') }}";
+});
+
+document.getElementById('generateReportBtn')?.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    // Obtener los valores seleccionados en el select múltiple
+    const select = document.getElementById('alumnos');
+    const selectedAlumnos = Array.from(select.selectedOptions).map(option => option.value);
+
+    // Obtener los parámetros actuales de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const fechaInicio = urlParams.get('fecha_inicio') || '';
+    const fechaFin = urlParams.get('fecha_fin') || '';
+
+    Swal.fire({
+        title: 'Seleccione como desea exportar el reporte',
+        html: '¿Cómo desea exportar el reporte?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Excel',
+        denyButtonText: 'PDF',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            actions: 'swal2-actions-vertical',
+            confirmButton: 'btn btn-submit',
+            denyButton: 'btn btn-submit',
+            cancelButton: 'btn btn-cancel'
+        },
+        buttonsStyling: false,
+        focusConfirm: false,
+        allowOutsideClick: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Construir URL con parámetros
+            let url = `/generar_reporte?alumnos=${encodeURIComponent(selectedAlumnos.join(','))}`;
+            if (fechaInicio) url += `&fecha_inicio=${encodeURIComponent(fechaInicio)}`;
+            if (fechaFin) url += `&fecha_fin=${encodeURIComponent(fechaFin)}`;
+            window.location.href = url;
+        } else if (result.isDenied) {
+            // Construir URL con parámetros
+            let url = `/generar_pdf?alumnos=${encodeURIComponent(selectedAlumnos.join(','))}`;
+            if (fechaInicio) url += `&fecha_inicio=${encodeURIComponent(fechaInicio)}`;
+            if (fechaFin) url += `&fecha_fin=${encodeURIComponent(fechaFin)}`;
+            window.location.href = url;
+        }
+    });
+});
+</script>
+
+{% if mensaje %}
+<script>
+  const tipo = "{{ mensaje.tipo }}";
+  const titulo = tipo === "success" ? "¡Éxito!" : "Error";
+
+  Swal.fire({
+    title: titulo,
+    html: "{{ mensaje.text|safe }}",
+    icon: tipo,
+    confirmButtonText: "Aceptar",
+    background: tipo === "success" ? "#d4edda" : "#f8d7da",
+    color: "#333333",
+    iconColor: tipo === "success" ? "#28a745" : "#dc3545",
+    timer: 10000,
+    timerProgressBar: true,
+  });
+</script>
+{% endif %}
+
+</body>
+</html>

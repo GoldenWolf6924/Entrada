@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registro de Asistencia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}" />
+  <meta name="msapplication-TileColor" content="#ffffff" />
+  <meta name="theme-color" content="#ffffff" />
+  <script src="{{ url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+</head>
+<body>
+  <h1>Registro de Asistencia Servicio Social</h1>
+  <h2 id="fecha"></h2>
+  <div class="container">
+    <p class="matricula">Ingrese su matrícula</p>
+    <form method="POST">
+      <input type="number" placeholder="Matrícula del alumno" name="txtmatricula" autocomplete="off" required />
+      <div class="botones">
+        <button class="entrada" type="submit" name="btnentrada" value="ok">ENTRADA</button>
+        <button class="salida" type="submit" name="btnsalida" value="ok">SALIDA</button>
+      </div>
+<div class="enlace-contenedor">
+  <a class="enlace-texto" href="{{ url_for('login') }}">Ingresar al sistema</a>
+</div>    </form>
+<p class="aviso">
+  <strong>INSTRUCCIONES IMPORTANTES:</strong><br />
+  • Por favor registre <strong>tanto su ENTRADA como SALIDA</strong> haciendo clic en los botones correspondientes.<br />
+  • <strong>No utilice la tecla "ENTER"</strong> para registrar su asistencia.<br />
+  • Los registros <strong>incompletos (sin registro de salida)</strong> serán eliminados automáticamente del sistema.<br />
+  • Recuerde que este registro es <strong>su responsabilidad</strong>.<br /><br />
+  
+  <em>¡Agradecemos su cooperación!</em>
+</p>
+  </div>
+
+<script>
+  function actualizarFecha() {
+      const options = {  
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      };
+      document.getElementById("fecha").textContent = new Date().toLocaleDateString('es-ES', options);
+    }
+
+    actualizarFecha();
+    setInterval(actualizarFecha, 1000);
+
+    if (window.history.replaceState) {
+      window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+
+  {% if mensaje %}
+  <script>
+    const tipo = "{{ mensaje.tipo }}"; // "success" o "error"
+    const titulo = tipo === "success" ? "¡Éxito!" : "Error";
+
+    Swal.fire({
+  title: titulo,
+  html: "{{ mensaje.text|safe }}",
+  icon: tipo,
+  confirmButtonText: "Aceptar",
+  background: tipo === "success" ? "#d4edda" : "#f8d7da",
+  color: "#333333",
+  iconColor: tipo === "success" ? "#28a745" : "#dc3545",
+  timer: 10000,
+  timerProgressBar: true,
+});
+
+  </script>
+  {% endif %}
+</body>
+</html>

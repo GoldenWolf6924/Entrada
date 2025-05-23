@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+    <script src="{{ url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+    <title>Gestión de Usuarios</title>
+    <style>
+        :root {
+            --primary-color: #084494;
+            --secondary-color: #1976d2;
+            --danger-color: #d32f2f;
+            --success-color: #28a745;
+            --light-gray: #f8f9fa;
+            --dark-gray: #343a40;
+        }
+    
+ 
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            
+        }
+        tr:nth-child(even) {
+            background-color: var(--light-gray);
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            border: none;
+            gap: 6px;
+            border-radius: 80px;
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #052652;
+        }
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #1565c0;
+        }
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top:0; left:0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #777;
+        }
+        .close-btn:hover {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(8, 68, 148, 0.2);
+        }
+        .permission-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            background-color: #e3f2fd;
+            color: var(--secondary-color);
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+        @media (max-width: 768px) {
+            .action-cell {
+                flex-direction: column;
+            }
+            .btn {
+                width: 100%;
+            }
+        }
+        .add-user-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header_footer.html' %}
+    <div class="container">
+               <h2>Lista de Usuarios</h2>
+<div class="add-user-container">
+            <button class="btn btn-success" onclick="openAddUserModal()">
+                Agregar Nuevo Usuario
+            </button>
+        </div>
+
+        <div class="card">
+
+   
+            <table id="users-table">
+                <thead>
+                    <tr>
+                        <th>Nombre de Usuario</th>
+                        <th>Permisos</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.usuario }}</td>
+                        <td>
+                        <span class="permission-badge">{{ usuario.rol }}</span>
+                        </td>
+                        <td class="action-cell">
+                            <button class="btn btn-secondary" onclick="openEditUsernameModal('{{ usuario.usuario }}')">
+                                Cambiar nombre
+                            </button>
+                            <button class="btn btn-primary" onclick="openChangePasswordModal('{{ usuario.usuario }}')">
+                                Cambiar contraseña
+                            </button>
+                            <a href="{{ url_for('eliminar_usuario', usuario=usuario.usuario) }}" class="btn btn-danger" onclick="return confirm('¿Eliminar usuario {{ usuario.usuario }}?');">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align:center;">No hay usuarios registrados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal cambiar nombre -->
+    <div id="editUsernameModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('editUsernameModal')">&times;</span>
+            <h2>Cambiar nombre de usuario</h2>
+            <form id="editUsernameForm" method="POST" action="{{ url_for('modificar_usuario') }}">
+                <input type="hidden" id="editUsernameId" name="usuario_original" />
+                <div class="form-group">
+                    <label for="newUsername">Nuevo nombre de usuario:</label>
+                    <input type="text" id="newUsername" name="usuario" required />
+                </div>
+                <button type="submit" class="btn btn-success">Guardar cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal cambiar contraseña -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('changePasswordModal')">&times;</span>
+            <h2>Cambiar contraseña</h2>
+            <form id="changePasswordForm" method="POST" action="{{ url_for('cambiar_contraseña') }}">
+                <input type="hidden" id="changePasswordId" name="usuario" />
+                <div class="form-group">
+                    <label for="newPassword">Nueva contraseña:</label>
+                    <input type="password" id="newPassword" name="password" required />
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar nueva contraseña:</label>
+                    <input type="password" id="confirmPassword" required />
+                </div>
+                <button type="submit" class="btn btn-success">Cambiar contraseña</button>
+            </form>
+        </div>
+    </div>
+ <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('addUserModal')">&times;</span>
+            <h2>Agregar Nuevo Usuario</h2>
+            <form id="addUserForm" method="POST" action="{{ url_for('usuarios') }}">
+                <div class="form-group">
+                    <label for="newUserUsername">Nombre de usuario:</label>
+                    <input type="text" id="newUserUsername" name="usuario" required />
+                </div>
+                <div class="form-group">
+                    <label for="newUserPassword">Contraseña:</label>
+                    <input type="password" id="newUserPassword" name="password" required />
+                </div>
+                <div class="form-group">
+                    <label for="newUserRole">Rol:</label>
+                    <select id="newUserRole" name="rol">
+                        <option value="Usuario">Usuario</option>
+                        <option value="Administrador">Administrador</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-success">Agregar Usuario</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Abrir modal cambio nombre
+        function openEditUsernameModal(username) {
+            document.getElementById('editUsernameId').value = username;
+            document.getElementById('newUsername').value = username;
+            document.getElementById('editUsernameModal').style.display = 'flex';
+        }
+
+        // Abrir modal cambio contraseña
+        function openChangePasswordModal(username) {
+            document.getElementById('changePasswordId').value = username;
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('changePasswordModal').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Validar contraseña antes de enviar
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            if (newPass !== confirmPass) {
+                e.preventDefault();
+                alert('Las contraseñas no coinciden');
+            }
+        });
+  function openAddUserModal() {
+            document.getElementById('newUserUsername').value = '';
+            document.getElementById('newUserPassword').value = '';
+            document.getElementById('newUserRole').value = 'usuario';
+            document.getElementById('addUserModal').style.display = 'flex';
+        }
+
+        // Add form validation for the add user form
+        document.getElementById('addUserForm').addEventListener('submit', function(e) {
+            const username = document.getElementById('newUserUsername').value.trim();
+            const password = document.getElementById('newUserPassword').value.trim();
+            
+            if (!username || !password) {
+                e.preventDefault();
+                alert('Todos los campos son obligatorios');
+            }
+        });
+        // Cerrar modal si clic fuera contenido
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        };
+    </script>
+
+    <!-- SweetAlert2 para mensajes -->
+  {% if mensaje %}
+  <script>
+    const tipo = "{{ mensaje.tipo }}";
+    const titulo = tipo === "success" ? "¡Éxito!" : "Error";
+
+    Swal.fire({
+      title: titulo,
+      html: "{{ mensaje.text|safe }}",
+      icon: tipo,
+      confirmButtonText: "Aceptar",
+      background: tipo === "success" ? "#d4edda" : "#f8d7da",
+      color: "#333333",
+      iconColor: tipo === "success" ? "#28a745" : "#dc3545",
+      timer: 7000,
+      timerProgressBar: true,
+    });
+  </script>
+  {% endif %}
+</body>
+</html>

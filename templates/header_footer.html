@@ -1,0 +1,15 @@
+<header>
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li><a href="/">📅 Inicio</a></li>
+            <li><a href="/dashboard">📊 Registros de Asistencia</a></li>
+            
+            {% if session.get('rol') == 'Administrador' %}
+                <li><a href="/alumnos">👥 Alumnos</a></li>
+                <li><a href="/usuarios">👤 Usuarios</a></li>
+            {% endif %}
+            
+            <li><a href="/logout">🚪 Cerrar Sesión</a></li>
+        </ul>
+    </nav>
+</header>

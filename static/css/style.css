@@ -1,0 +1,278 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BASE */
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: #1e1e2f;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.wrapper,
+.login-wrapper {
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+}
+
+/* CARD / CONTENEDOR CENTRAL */
+.card,
+.login-container {
+  background: #2b2b3c;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  padding: 40px 30px;
+  text-align: center;
+  width: 100%;
+}
+
+
+h1, .title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 25px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+}
+
+h1::after, .title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #04a1fc, #0388d4);
+  border-radius: 3px;
+}
+
+/* Efecto hover opcional */
+h1:hover, .title:hover {
+  text-shadow: 0 0 10px rgba(4, 161, 252, 0.3);
+  transition: text-shadow 0.3s ease;
+}
+
+/* Para pantallas pequeñas */
+@media (max-width: 480px) {
+  h1, .title {
+    font-size: 1.8rem;
+    padding-bottom: 8px;
+  }
+  
+  h1::after, .title::after {
+    width: 60px;
+    height: 2px;
+  }
+}
+#fecha {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  color: #ccc;
+}
+
+/* INPUTS */
+input {
+  width: 100%;
+  padding: 15px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  border: 1px solid #444;
+  border-radius: 10px;
+  background-color: #3a3a4d;
+  color: #f0f0f0;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+input:focus {
+  outline: none;
+  border-color: #04a1fc;
+  background-color: #2f2f3f;
+}
+
+
+
+/* Entrada / Salida */
+.entrada {
+  background-color: #388e3c;
+  color: white;
+}
+.entrada:hover {
+  background-color: #2e7d32;
+}
+
+.salida {
+  background-color: #d32f2f;
+  color: white;
+}
+.salida:hover {
+  background-color: #c62828;
+}
+
+/* BOTONES MEJORADOS */
+.btn-login, .btn-back {
+  padding: 15px;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-bottom: 15px;
+  border: none;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Botón de login mejorado */
+.btn-login {
+  background: linear-gradient(135deg, #04a1fc, #0388d4);
+  color: white;
+  margin-bottom: 20px; /* Más espacio debajo */
+  box-shadow: 0 4px 6px rgba(4, 161, 252, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #0388d4, #0277bd);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(4, 161, 252, 0.3);
+}
+
+/* Botón de regresar mejorado */
+.btn-back {
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #555;
+  margin-bottom: 0; /* Eliminamos el margen inferior */
+  transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border-color: #777;
+}
+
+/* Contenedor de botones para mejor espaciado */
+.form-group:last-of-type {
+  margin-bottom: 30px; /* Más espacio antes de los botones */
+}
+
+/* Contenedor específico para los botones si es necesario */
+.buttons-container {
+  margin-top: 30px;
+}
+/* Enlaces */
+a.ingresar, .forgot-password a {
+  color: #90caf9;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+a.ingresar:hover, .forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* Avisos */
+p.aviso {
+  font-size: 0.95rem;
+  color: #f8d7da;
+  background-color: #3a1c1c;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-top: 20px;
+}
+
+/* Iconos básicos simulados */
+.icon-user:before { content: "👤"; }
+.icon-lock:before { content: "🔒"; }
+.icon-eye:before { content: "👁️"; }
+.icon-eye-slash:before { content: "🙈"; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .card, .login-container {
+    padding: 30px 20px;
+  }
+  
+  h1, .title {
+    font-size: 1.5rem;
+  }
+}
+.logo {
+  margin-bottom: 5px;
+}
+
+.logo img {
+  max-width: 150px;
+  height: auto;
+}
+
+/* ICONOS */
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-container i {
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-120%);
+  font-style: normal;
+  z-index: 1;
+  line-height: 1; 
+}
+
+.input-container input {
+  padding-left: 45px;
+  line-height: 1.5; 
+}
+
+.toggle-password {
+  position: absolute;
+  top: 51%;
+  right: 30px;
+  transform: translateY(-50%); 
+  cursor: pointer;
+  font-style: normal;
+  z-index: 1;
+  line-height: 1;
+  background: transparent;
+  border: none;
+  padding: 0 10px; 
+}
+
+.icon-eye:before,
+.icon-eye-slash:before {
+  font-size: 1.2rem;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 0.8;
+  padding: 0;
+  margin: 0;
+}
+

@@ -1,0 +1,475 @@
+/* Estilos base comunes */
+body {
+  font-family: 'Times New Roman';
+  background-color: #f5f7fa;
+  color: #333;
+  line-height: 1.6;
+  padding: 80px 20px 60px;
+  margin: 0;
+}
+
+/* Header */
+header {
+  background: #084494;
+  padding: 15px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.nav-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 15px;
+}
+
+.nav-list a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 12px;
+  transition: color 0.3s;
+}
+
+.nav-list a:hover {
+  color: #ffcc00;
+}
+
+/* Footer */
+footer {
+  background: #333;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: #084494;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+/* Formularios */
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="datetime-local"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 80px;
+  font-size: 1rem;
+}
+
+/* Tablas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #084494;
+  color: white;
+  font-weight: 500;
+}
+
+tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+tr:hover {
+  background-color: #e9ecef;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 80px;
+  text-decoration: none;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: none;
+  font-size: 0.95rem;
+}
+
+.btn-submit {
+  background: #084494;
+  color: white;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+}
+
+.btn-submit:hover {
+  background: #063a7a;
+}
+
+.btn-primary {
+  background: #084494;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #063a7a;
+}
+
+.btn-warning {
+  background: #ffb84d;
+  color: #333;
+}
+
+.btn-warning:hover {
+  background: #ffaa1a;
+}
+
+.btn-danger {
+  background-color: #c90707;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-danger:hover {
+  background-color: #6e0404;
+}
+
+.btn-danger:active {
+  background-color: #490202;
+  transform: scale(0.97);
+}
+
+.btn-search, .btn-filter, .btn-clear {
+  padding: 10px 20px;
+}
+
+.btn-clear {
+  background: #f50000;
+  color: white;
+  border-radius: 20px;
+  font-weight: 600;
+
+}
+
+.btn-clear:hover {
+  background: #700303;
+}
+
+
+
+.btn.btn-primary.modificar-btn{
+  background-color: #084494;
+  border-radius: 40px;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn.btn-primary.modificar-btn:hover {
+  background-color: #052652;
+}
+
+.btn.btn-primary.modificar-btn:active {
+  background-color: #031733;
+  transform: scale(0.97);
+}
+
+
+.close, .close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Barra de búsqueda */
+.search-container {
+  background: white;
+  padding: 20px;
+  border-radius: 40px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+
+.search-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.search-group input {
+  flex: 1;
+}
+
+.date-filter {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+/* Estilo mejorado para el botón Siguiente */
+.btn-next {
+  background: linear-gradient(135deg, #084494 0%, #0066cc 100%);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(8, 68, 148, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 20px;
+}
+
+.btn-next:hover {
+  background: linear-gradient(135deg, #0066cc 0%, #084494 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(8, 68, 148, 0.4);
+}
+
+.btn-next:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(8, 68, 148, 0.4);
+}
+
+.btn-next::after {
+  content: '→';
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.btn-next:hover::after {
+  transform: translateX(3px);
+}
+
+.btn-prev {
+  background: linear-gradient(135deg, #084494 0%, #0066cc 100%);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 30px;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(8, 68, 148, 0.3);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 20px;
+}
+
+.btn-prev:hover {
+  background: linear-gradient(135deg, #0066cc 0%, #084494 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(8, 68, 148, 0.4);
+}
+
+.btn-prev:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 4px rgba(8, 68, 148, 0.4);
+}
+
+.btn-prev::after {
+  content: '←';
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.btn-prev:hover::after {
+  transform: translateX(3px);
+}
+
+/* Ajuste para el texto de información de página */
+.page-info {
+  padding: 10px 20px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  font-weight: 500;
+  color: #495057;
+}
+/* Celdas de acción */
+.action-cell {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .action-cell {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .search-group, .date-filter {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Estilos del header */
+header {
+    background-color: #084494;
+    padding: 15px 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* Barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Lista de navegación */
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+/* Elementos del menú */
+.nav-list li {
+    margin: 0;
+}
+
+.nav-list li a {
+    color: white;
+    font-weight: 500;
+    font-size: 1.1rem; /* ← Este es el tamaño actual */
+    position: relative;
+    padding: 8px 12px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Subrayado animado */
+.nav-list li a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    background-color: #ffcc00;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Efecto hover */
+.nav-list li a:hover {
+    color: #ffcc00;
+}
+
+.nav-list li a:hover::after {
+    width: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-top: 80px;     /* ← Para el header fijo */
+    padding-bottom: 60px;  /* ← Para el footer fijo */
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}

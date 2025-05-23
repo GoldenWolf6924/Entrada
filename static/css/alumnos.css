@@ -1,0 +1,228 @@
+/* Estilos básicos */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  padding: 80px 20px 60px;
+  margin: 0;
+}
+/* Estilos del header */
+header {
+    background-color: #084494;
+    padding: 15px 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+/* Barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Lista de navegación */
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+}
+
+/* Elementos del menú */
+.nav-list li {
+    margin: 0;
+}
+
+.nav-list li a {
+    color: white;
+    font-weight: 500;
+    font-size: 1.1rem; /* ← Este es el tamaño actual */
+    position: relative;
+    padding: 8px 12px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+/* Subrayado animado */
+.nav-list li a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    background-color: #ffcc00;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Efecto hover */
+.nav-list li a:hover {
+    color: #ffcc00;
+}
+
+.nav-list li a:hover::after {
+    width: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    padding-top: 80px;     /* ← Para el header fijo */
+    padding-bottom: 60px;  /* ← Para el footer fijo */
+    background-color: #f4f4f9;
+    color: #333;
+    line-height: 1.6;
+}
+
+
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+/* Contenedor principal */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Contenedor principal */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h2 {
+  text-align: center;
+  color: #4a6fa5;
+  margin-bottom: 30px;
+}
+
+/* Formulario */
+form {
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background: #4a6fa5;
+  color: white;
+  border: none;
+  border-radius: 22px;
+  cursor: pointer;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto 30px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #4a6fa5;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background: #f8f9fa;
+}
+
+/* Botones */
+.btn {
+  padding: 10px 15px;
+  border-radius: 6px;
+  text-decoration: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.btn-warning {
+  background: #ffb84d;
+  color: #333;
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+}
+
+/* Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 100;
+}
+
+.modal-content {
+  background: white;
+  margin: 10% auto;
+  padding: 25px;
+  width: 90%;
+  max-width: 500px;
+  border-radius: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+  }
+}

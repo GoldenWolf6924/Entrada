@@ -1,0 +1,170 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-image: url('../img/fondoflama-2.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Montserrat', 'Arial', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px;
+  font-size: 2.8rem;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#fecha {
+  text-align: center;
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 40px;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+  font-weight: 500;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.matricula {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+input {
+  width: 100%;
+  padding: 25px;
+  font-size: 1.5rem;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  text-align: center;
+  color: #2c3e50;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+input:focus {
+  outline: none;
+  border-color: #4d77e8;
+  box-shadow: 0 0 0 4px rgba(77, 119, 232, 0.3);
+  background: white;
+}
+
+.botones {
+  display: flex;
+  gap: 20px;
+  margin: 30px 0;
+}
+
+.entrada, .salida {
+  flex: 1;
+  padding: 20px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.entrada {
+  background: #4d77e8;
+  color: white;
+}
+
+.salida {
+  background: #ff4f47;
+  color: white;
+}
+
+.entrada:hover {
+  background: #3a5fcf;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.salida:hover {
+  background: #e63935;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.entrada:active, .salida:active {
+  transform: translateY(1px);
+}
+
+.enlace-contenedor {
+  text-align: center;
+  margin: 15px;
+}
+
+.enlace-texto {
+  color: #4d77e8;
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 1.2rem;
+  padding: 0;
+  display: inline; 
+}
+
+.enlace-texto:hover {
+  color: #3a5fcf;
+  text-decoration: underline;
+  background-color: transparent;
+}
+p.aviso {
+  color: #d62c2c;
+  font-size: 1rem;
+  text-align: center;
+  line-height: 1.6;
+  margin-top: 30px;
+  padding: 15px;
+  background: rgba(214, 44, 44, 0.1);
+  border-radius: 10px;
+  border-left: 5px solid #d62c2c;
+  font-weight: 600;
+}

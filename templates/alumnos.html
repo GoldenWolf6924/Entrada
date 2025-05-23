@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestión de Alumnos</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+  <script src="{{ url_for('static', filename='js/sweetalert2.all.min.js') }}"></script>
+  <style>
+
+
+    /* Estilos para el modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 25px;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    /* Estilos para inputs */
+    input:focus {
+      outline: none;
+      border-color: #084494;
+      box-shadow: 0 0 0 2px rgba(8, 68, 148, 0.2);
+    }
+
+    /* Estilos para formulario */
+    .form-alumnos {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+.action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+        border: none;
+        gap: 6px;
+    }
+
+    .edit-btn {
+        background-color: #e3f2fd;
+        color: #1976d2;
+        border: 1px solid #bbdefb;
+    }
+
+    .edit-btn:hover {
+        background-color: #bbdefb;
+        transform: translateY(-1px);
+    }
+
+    .edit-btn:active {
+        transform: translateY(0);
+        background-color: #90caf9;
+    }
+
+    .delete-btn {
+        background-color: #ffebee;
+        color: #d32f2f;
+        border: 1px solid #ffcdd2;
+    }
+
+    .delete-btn:hover {
+        background-color: #ffcdd2;
+        transform: translateY(-1px);
+    }
+
+    .delete-btn:active {
+        transform: translateY(0);
+        background-color: #ef9a9a;
+    }
+
+    .action-cell {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        padding: 8px 4px !important;
+    }
+
+    /* Iconos para los botones */
+    .btn-icon {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Versión móvil */
+    @media (max-width: 768px) {
+        .action-btn {
+            padding: 6px 8px;
+            font-size: 0.8rem;
+        }
+        
+        .btn-icon {
+            width: 14px;
+            height: 14px;
+        }
+    }
+    /* Estilos para botones */
+    .btn {
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .btn-submit {
+      background-color: #084494;
+      width: 100%;
+      padding: 12px;
+    }
+
+    .btn-submit:hover {
+      background-color: #052652;
+    }
+
+    .btn-submit:active {
+      background-color: #031733;
+      transform: scale(0.97);
+    }
+
+    .btn-warning {
+      background-color: #ffb84d;
+      color: #2c2a2a;
+    }
+
+    .btn-warning:hover {
+      background-color: #ffaa1a;
+    }
+
+    .btn-warning:active {
+      background-color: #e69500;
+      transform: scale(0.97);
+    }
+
+    .btn-danger {
+      background-color: #c90707;
+    }
+
+    .btn-danger:hover {
+      background-color: #6e0404;
+    }
+
+    .btn-danger:active {
+      background-color: #490202;
+      transform: scale(0.97);
+    }
+
+  .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-prev, .btn-next {
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #084494;
+  color: white;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border-radius: 40px;
+}
+
+.btn-prev:hover, .btn-next:hover {
+  background-color: #052652;
+}
+
+.page-info {
+  font-weight: 500;
+  color: #555;
+}
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      table-layout: fixed; /* Añadido para controlar el ancho de columnas */
+    }
+
+    th, td {
+      padding: 12px 8px; /* Reducido el padding horizontal */
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #084494;
+      color: white;
+      font-weight: 500;
+    }
+
+
+
+
+
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      table {
+        table-layout: auto; /* Volver al comportamiento automático en móviles */
+      }
+      
+      th:nth-child(1), td:nth-child(1),
+      th:nth-child(2), td:nth-child(2),
+      th:nth-child(3), td:nth-child(3) {
+        width: auto; /* Ancho automático en móviles */
+      }
+      
+      .action-cell {
+        flex-direction: row; /* Mantener en fila en móviles */
+        flex-wrap: wrap; /* Permitir envolver si es necesario */
+        justify-content: center;
+      }
+      
+      .btn {
+        padding: 6px 8px;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      th, td {
+        padding: 8px 4px;
+        font-size: 0.9rem;
+      }
+      
+      .btn {
+        min-width: 50px;
+        padding: 4px 6px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+  {% include 'header_footer.html' %}
+
+  <div class="container">
+    <h2>Administrar Alumnos</h2>
+
+    <!-- Formulario para agregar alumno -->
+    <form method="POST" class="form-alumnos">
+      <div class="form-group">
+        <label for="matricula"><b>Matrícula:</b></label>
+        <input type="number" id="matricula" name="matricula" autocomplete="off" required />
+      </div>
+      <div class="form-group">
+        <label for="nombre"><b>Nombre:</b></label>
+        <input type="text" id="nombre" name="nombre" autocomplete="off" required />
+      </div>
+      <button type="submit" class="btn btn-submit">Agregar Alumno</button>
+    </form>
+
+    <!-- Tabla de alumnos -->
+    <h3>Lista de Alumnos</h3>
+    <table>
+      <thead>
+        <tr>
+          <th><b>Matrícula</b></th>
+          <th><b>Nombre</b></th>
+          <th><b>Acciones</b></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alumno in alumnos %}
+        <tr>
+          <td>{{ alumno.Matricula }}</td>
+          <td>{{ alumno.Nombre }}</td>
+         <td class="action-cell">
+    <a href="#" class="action-btn edit-btn" onclick="abrirModal('{{ alumno.Matricula }}', '{{ alumno.Nombre }}'); return false;">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34a.9959.9959 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+    </a>
+    <a href="{{ url_for('eliminar_alumno', matricula=alumno.Matricula) }}" 
+       class="action-btn delete-btn"
+       onclick="return confirm('¿Seguro que quieres eliminar este alumno?')">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+        </svg>
+    </a>
+</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal para editar alumno -->
+  <div id="modalEditar" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="cerrarModal()">&times;</span>
+      <h3>Editar Alumno</h3>
+      <form id="formEditar" method="POST" action="{{ url_for('modificar_alumno') }}">
+        <input type="hidden" id="matricula_original" name="matricula_original" />
+        <div class="form-group">
+          <label for="matricula_edit"><b>Matrícula:</b></label>
+          <input type="number" id="matricula_edit" name="matricula" required />
+        </div>
+        <div class="form-group">
+          <label for="nombre_edit"><b>Nombre</b>:</label>
+          <input type="text" id="nombre_edit" name="nombre" required />
+        </div>
+        <button type="submit" class="btn btn-submit">Guardar Cambios</button>
+      </form>
+    </div>
+  </div>
+{% if total_paginas > 1 %}
+  <div class="pagination">
+    {% if page > 1 %}
+      <a href="{{ url_for('alumnos', page=page-1) }}" class="btn-prev">Anterior</a>
+    {% endif %}
+
+    <span class="page-info">Página {{ page }} de {{ total_paginas }}</span>
+
+    {% if page < total_paginas %}
+      <a href="{{ url_for('alumnos', page=page+1) }}" class="btn-next">Siguiente</a>
+    {% endif %}
+  </div>
+{% endif %}
+
+  {% if mensaje %}
+  <script>
+    const tipo = "{{ mensaje.tipo }}";
+    const titulo = tipo === "success" ? "¡Éxito!" : "Error";
+
+    Swal.fire({
+      title: titulo,
+      html: "{{ mensaje.text|safe }}",
+      icon: tipo,
+      confirmButtonText: "Aceptar",
+      background: tipo === "success" ? "#d4edda" : "#f8d7da",
+      color: "#333333",
+      iconColor: tipo === "success" ? "#28a745" : "#dc3545",
+      timer: 7000,
+      timerProgressBar: true,
+    });
+  </script>
+  {% endif %}
+
+  <script>
+    function abrirModal(matricula, nombre) {
+      const modal = document.getElementById('modalEditar');
+      modal.style.display = 'flex';
+      document.getElementById('matricula_original').value = matricula;
+      document.getElementById('matricula_edit').value = matricula;
+      document.getElementById('nombre_edit').value = nombre;
+      document.body.style.overflow = 'hidden';
+    }
+
+    function cerrarModal() {
+      document.getElementById('modalEditar').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('modalEditar')) {
+        cerrarModal();
+      }
+    }
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === "Escape") {
+        cerrarModal();
+      }
+    });
+  </script>
+</body>
+</html>
